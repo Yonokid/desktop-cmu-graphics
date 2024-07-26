@@ -411,12 +411,8 @@ def getAlignAttrs(align):
     return [xattr, yattr]
 
 def surfaceFromImage(image):
-    if image.mode == 'RGBA':
-        image = image.convert('RGBa')
-        a = array.array('B', image.tobytes('raw', 'RGBa'))
-    else:
-        image = image.convert('RGBA')
-        a = array.array('B', image.tobytes('raw', 'RGBA'))
+    image = image.convert('RGBA').convert('RGBa') # ensure we have the correct number of channels
+    a = array.array('B', image.tobytes('raw', 'RGBa'))
     surface = cairo.ImageSurface.create_for_data(a, cairo.FORMAT_ARGB32, image.size[0], image.size[1])
     return surface
 
